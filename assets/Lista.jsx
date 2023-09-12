@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import TaskItem from './Tarea';
 import TaskModal from './Modal';
+
+const NUM_COLUMNS = 3; // Define el número de columnas que deseas
 
 const HomeScreen = () => {
   const [tasks, setTasks] = useState([]);
@@ -30,12 +32,15 @@ const HomeScreen = () => {
   };
 
   return (
-    <View>
-      <Text>Todo App</Text>
-      <Button title="Add Task" onPress={() => setModalVisible(true)} />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Todo App</Text>
+        <Button title="Add Task" onPress={() => setModalVisible(true)} />
+      </View>
       <FlatList
         data={tasks}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
+        numColumns={NUM_COLUMNS} // Establece el número de columnas
         renderItem={({ item }) => (
           <TaskItem
             task={item}
@@ -52,5 +57,22 @@ const HomeScreen = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  },
+  header: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+});
 
 export default HomeScreen;
